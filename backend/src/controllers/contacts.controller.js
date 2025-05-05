@@ -3,7 +3,7 @@ const goHighLevelService = require('../services/gohighlevel.service');
 exports.getAllContacts = async (req, res, next) => {
     try {
         const { page, limit } = req.query;
-        const contacts = await goHighLevelService.getContacts(page, limit);
+        const contacts = await goHighLevelService.contacts.getContacts(page, limit);
 
         res.status(200).json({
             status: 'success',
@@ -17,7 +17,7 @@ exports.getAllContacts = async (req, res, next) => {
 exports.getContactById = async (req, res, next) => {
     try {
         const { id } = req.params;
-        const contact = await goHighLevelService.getContactById(id);
+        const contact = await goHighLevelService.contacts.getContactById(id);
 
         res.status(200).json({
             status: 'success',
@@ -31,7 +31,7 @@ exports.getContactById = async (req, res, next) => {
 exports.createContact = async (req, res, next) => {
     try {
         const contactData = req.body;
-        const newContact = await goHighLevelService.createContact(contactData);
+        const newContact = await goHighLevelService.contacts.createContact(contactData);
 
         res.status(201).json({
             status: 'success',
@@ -46,7 +46,7 @@ exports.updateContact = async (req, res, next) => {
     try {
         const { id } = req.params;
         const contactData = req.body;
-        const updatedContact = await goHighLevelService.updateContact(id, contactData);
+        const updatedContact = await goHighLevelService.contacts.updateContact(id, contactData);
 
         res.status(200).json({
             status: 'success',
@@ -60,7 +60,7 @@ exports.updateContact = async (req, res, next) => {
 exports.deleteContact = async (req, res, next) => {
     try {
         const { id } = req.params;
-        await goHighLevelService.deleteContact(id);
+        await goHighLevelService.contacts.deleteContact(id);
 
         res.status(204).json({
             status: 'success',
@@ -74,7 +74,7 @@ exports.deleteContact = async (req, res, next) => {
 exports.searchContacts = async (req, res, next) => {
     try {
         const query = req.query;
-        const contacts = await goHighLevelService.searchContacts(query);
+        const contacts = await goHighLevelService.contacts.searchContacts(query);
 
         res.status(200).json({
             status: 'success',

@@ -122,6 +122,127 @@ const contactsService = {
     }
 };
 
+// Opportunities API service
+const opportunitiesService = {
+    // Get all opportunities with pagination
+    getOpportunities: async (pipelineId, page = 1, limit = 20, startAfterId = null, startAfter = null) => {
+        return executeWithRetry(async () => {
+            try {
+                const params = { limit };
+
+                if (startAfterId) params.startAfterId = startAfterId;
+                if (startAfter) params.startAfter = startAfter;
+
+                const response = await api.get(`/pipelines/${pipelineId}/opportunities`, {
+                    params
+                });
+                return response.data;
+            } catch (error) {
+                throw handleApiError(error);
+            }
+        });
+    },
+
+    // Get opportunity by ID
+    getOpportunityById: async (pipelineId, id) => {
+        return executeWithRetry(async () => {
+            try {
+                const response = await api.get(`/pipelines/${pipelineId}/opportunities/${id}`);
+                return response.data;
+            } catch (error) {
+                throw handleApiError(error);
+            }
+        });
+    },
+
+    // Create new opportunity
+    createOpportunity: async (pipelineId, opportunityData) => {
+        return executeWithRetry(async () => {
+            try {
+                const response = await api.post(`/pipelines/${pipelineId}/opportunities`, opportunityData);
+                return response.data;
+            } catch (error) {
+                throw handleApiError(error);
+            }
+        });
+    },
+
+    // Update existing opportunity
+    updateOpportunity: async (pipelineId, id, opportunityData) => {
+        return executeWithRetry(async () => {
+            try {
+                const response = await api.put(`/pipelines/${pipelineId}/opportunities/${id}`, opportunityData);
+                return response.data;
+            } catch (error) {
+                throw handleApiError(error);
+            }
+        });
+    },
+
+    // Delete opportunity
+    deleteOpportunity: async (pipelineId, id) => {
+        return executeWithRetry(async () => {
+            try {
+                const response = await api.delete(`/pipelines/${pipelineId}/opportunities/${id}`);
+                return response.data;
+            } catch (error) {
+                throw handleApiError(error);
+            }
+        });
+    },
+
+    // Search opportunities
+    searchOpportunities: async (pipelineId, query) => {
+        return executeWithRetry(async () => {
+            try {
+                const response = await api.get(`/pipelines/${pipelineId}/opportunities`, { params: query });
+                return response.data;
+            } catch (error) {
+                throw handleApiError(error);
+            }
+        });
+    },
+
+    // Get all pipelines (needed to access opportunities)
+    getPipelines: async () => {
+        return executeWithRetry(async () => {
+            try {
+                const response = await api.get('/pipelines');
+                return response.data;
+            } catch (error) {
+                throw handleApiError(error);
+            }
+        });
+    }
+};
+
+// Locations API service
+const locationsService = {
+    // Get all locations
+    getLocations: async () => {
+        return executeWithRetry(async () => {
+            try {
+                const response = await api.get('/locations');
+                return response.data;
+            } catch (error) {
+                throw handleApiError(error);
+            }
+        });
+    },
+
+    // Get location by ID
+    getLocationById: async (id) => {
+        return executeWithRetry(async () => {
+            try {
+                const response = await api.get(`/locations/${id}`);
+                return response.data;
+            } catch (error) {
+                throw handleApiError(error);
+            }
+        });
+    }
+};
+
 // Error handler
 function handleApiError(error) {
     if (error.response) {
@@ -154,4 +275,8 @@ function handleApiError(error) {
     }
 }
 
-module.exports = contactsService; 
+module.exports = {
+    contacts: contactsService,
+    opportunities: opportunitiesService,
+    locations: locationsService
+}; 
